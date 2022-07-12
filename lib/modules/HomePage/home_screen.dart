@@ -1,4 +1,5 @@
 import 'package:blood_donation/model/user_model.dart';
+import 'package:blood_donation/modules/BloodDonatePage/blooddonate_screen.dart';
 import 'package:blood_donation/modules/ChatPage/chat_screen.dart';
 import 'package:blood_donation/modules/ChatPage/home_screen.dart';
 import 'package:blood_donation/modules/initial_screen.dart';
@@ -12,6 +13,7 @@ import 'package:get/get.dart';
 import '../../baseUtils/colors.dart';
 import '../../baseUtils/constants.dart';
 import '../../baseUtils/strings.dart';
+
 
 import '../../widgets/common_widget.dart';
 import 'home_controller.dart';
@@ -28,6 +30,7 @@ class HomeScreenState extends State<HomeScreen> {
   final TextEditingController _userController = new TextEditingController();
   final TextEditingController _passController = new TextEditingController();
   bool _isChecked = false;
+  final TextEditingController userController = new TextEditingController();
 
 
   @override
@@ -123,12 +126,14 @@ class HomeScreenState extends State<HomeScreen> {
           // set the `alignment` of container to Alignment.bottomCenter
           new Container(
             alignment: Alignment.topCenter,
+            //color: Colors.white,
             padding: new EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * .20,
                 right: 20.0,
                 left: 20.0),
             child: new Container(
               height: 470.0,
+              color: Colors.white,
 
               width: MediaQuery.of(context).size.width,
               child: new Card(
@@ -136,6 +141,7 @@ class HomeScreenState extends State<HomeScreen> {
                 elevation: 4.0,
                 child: Column(
                   children: [
+
                     Padding(
                       padding: const EdgeInsets.only(top: 10,left: 10,right: 10),
                       child: Container(decoration: new BoxDecoration(
@@ -147,6 +153,7 @@ class HomeScreenState extends State<HomeScreen> {
 
 
                       ),
+
 
 
                         height: getDeviceHeightByPercentage(25, context),
@@ -169,10 +176,12 @@ class HomeScreenState extends State<HomeScreen> {
 
 
 
+
+
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 10,top: 5),
+                      padding: const EdgeInsets.only(left: 10,top: 10),
                       child: Align(
                         alignment: Alignment.topLeft,
                         child: Column(
@@ -211,10 +220,12 @@ class HomeScreenState extends State<HomeScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           buildText('Patient Name'),
+                          SizedBox(width: 50,),
                           buildText('Age'),
+                          SizedBox(width: 60,),
                           buildText('Hospital')
                         ],
                       ),
@@ -222,16 +233,19 @@ class HomeScreenState extends State<HomeScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           buildText('John Deo'),
+                          SizedBox(width: 80,),
                           buildText('20'),
+                          SizedBox(width: 50,),
+
                           buildText('Ganga Hospital')
                         ],
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 4,bottom: 5),
+                      padding: const EdgeInsets.only(left: 4,bottom: 5,top: 5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -246,29 +260,29 @@ class HomeScreenState extends State<HomeScreen> {
                       color: Colors.grey,
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(5.0),
                       child: Row(
                         children: [
-                          Image(
-
-                            image: AssetImage('assets/images/profile.jpeg'),
-                            height: getDeviceHeightByPercentage(2, context),
+                          CircleAvatar(
+                            radius: 20,
+                            backgroundImage: AssetImage("assets/images/profile.jpeg"),
                           ),
                           SizedBox(width: 20,),
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               buildText('Post By'),
-                              buildText('Praveen')
+                              buildText('RamSathya')
                             ],
                           ),
                           SizedBox(
-                            width: 110,
+                            width: 100,
                           ),
                           ElevatedButton(
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
                               backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-                              padding: MaterialStateProperty.all(EdgeInsets.only(left:10,top: 8,bottom: 8,right: 10)),
+                              padding: MaterialStateProperty.all(EdgeInsets.only(left:10,top: 6,bottom: 6,right: 10)),
                               textStyle: MaterialStateProperty.all(TextStyle(fontSize: 20)) ,
                               shape: MaterialStateProperty.all(
                                 RoundedRectangleBorder(
@@ -282,7 +296,7 @@ class HomeScreenState extends State<HomeScreen> {
                             ),
                             child: Row(
                               children: [
-                                Text('IM A HERO'),
+                                Text('IM A HERO',style: TextStyle(fontSize: 12,color: Colors.white),),
 
 
                               ],
@@ -308,12 +322,88 @@ class HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+          InkWell(
+            onTap: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => BloodDonateScreen(),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 40,top: 660),
+              child: Container(
+                //color: appColor,
+                  width: getDeviceWidthByPercentage(35, context),
+                  height: getDeviceHeightByPercentage(6 , context),
+                  // alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7),
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black12),
+
+                  ),
+
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 45,top: 3),
+                    child: Row(
+
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildText('Blood', fontWeight: FontWeight.bold, fontSize: 14 ),
+                            buildText('Donation', fontWeight: FontWeight.bold, fontSize: 14 ),
+
+                          ],
+                        ),
+                        Align(alignment: Alignment.topLeft,
+                        child: Icon(Icons.arrow_forward_ios,size: 16,),)
+                      ],
+                    ),
+                  )
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => BloodDonateScreen(),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 660,left: 20),
+              child: Container(
+                //color: appColor,
+                  width: getDeviceWidthByPercentage(13, context),
+                  height: getDeviceHeightByPercentage(6 , context),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7),
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black12),
+
+                  ),
+
+                  child:Image(
+
+                    image: AssetImage('assets/images/Blood donation.png'),
+                    height: getDeviceHeightByPercentage(4, context),
+                    width: getDeviceWidthByPercentage(5, context),
+                  ),
+              ),
+            ),
+          ),
           Padding(
-            padding: const EdgeInsets.only(left: 40,top: 680),
+            padding: const EdgeInsets.only(left: 232,top: 660),
             child: Container(
               //color: appColor,
-                width: getDeviceWidthByPercentage(30, context),
-                height: getDeviceHeightByPercentage(8 , context),
+                width: getDeviceWidthByPercentage(33, context),
+                height: getDeviceHeightByPercentage(6 , context),
                 // alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(7),
@@ -323,85 +413,30 @@ class HomeScreenState extends State<HomeScreen> {
                 ),
 
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 20,top: 3),
+                  padding: const EdgeInsets.only(left: 35,top: 3),
                   child: Row(
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          buildText('Blood', fontWeight: FontWeight.bold, fontSize: 16 ),
-                          buildText('Donation', fontWeight: FontWeight.bold, fontSize: 16 ),
+                          buildText('Blood', fontWeight: FontWeight.bold, fontSize: 14 ),
+                          buildText('Request', fontWeight: FontWeight.bold, fontSize: 14 ),
 
                         ],
                       ),
                       Align(alignment: Alignment.topLeft,
-                      child: Icon(Icons.arrow_forward_ios),)
+                        child: Icon(Icons.arrow_forward_ios,size: 16,),)
                     ],
                   ),
                 )
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 680,left: 5),
-            child: Container(
-              //color: appColor,
-                width: getDeviceWidthByPercentage(13, context),
-                height: getDeviceHeightByPercentage(8 , context),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(7),
-                  color: Colors.white,
-                  border: Border.all(color: Colors.black12),
-
-                ),
-
-                child:Image(
-
-                  image: AssetImage('assets/images/Blood donation.png'),
-                  height: getDeviceHeightByPercentage(4, context),
-                  width: getDeviceWidthByPercentage(5, context),
-                ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 250,top: 680),
-            child: Container(
-              //color: appColor,
-                width: getDeviceWidthByPercentage(30, context),
-                height: getDeviceHeightByPercentage(8 , context),
-                // alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(7),
-                  color: Colors.white,
-                  border: Border.all(color: Colors.black12),
-
-                ),
-
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          buildText('Blood', fontWeight: FontWeight.bold, fontSize: 16 ),
-                          buildText('Request', fontWeight: FontWeight.bold, fontSize: 16 ),
-
-                        ],
-                      ),
-                      Align(alignment: Alignment.topLeft,
-                        child: Icon(Icons.arrow_forward_ios),)
-                    ],
-                  ),
-                )
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 680,left: 200),
+            padding: const EdgeInsets.only(top: 660,left: 200),
             child: Container(
               //color: appColor,
               width: getDeviceWidthByPercentage(13, context),
-              height: getDeviceHeightByPercentage(8 , context),
+              height: getDeviceHeightByPercentage(6 , context),
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(7),
@@ -420,49 +455,142 @@ class HomeScreenState extends State<HomeScreen> {
           ),
 
           Padding(
-            padding: const EdgeInsets.only(top: 760,left: 10,right: 10),
+            padding: const EdgeInsets.only(top: 740,left: 20,right: 20),
             child: Container(
              // width: getDeviceWidthByPercentage(, context),
-              height: 200,
+              height: 250,
               color:Colors.green,
               child: HomesScreens(),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 850,left: 40,right: 40),
-            child: Container(
-              height: 400,
+            padding: const EdgeInsets.only(top: 850,right: 25,left: 25),
+            child: new Container(
+              height: 400.0,
+             // color: Colors.white38,
+              decoration: new BoxDecoration(
+               color:Colors.white60,
+                 borderRadius: BorderRadius.circular(15),),
 
-              color: Colors.green,
+              width: MediaQuery.of(context).size.width,
+              child: new Card(
+                color: Colors.white,
+                elevation: 4.0,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10,top: 10,bottom: 5),
+                  child: Row(
+                  //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundImage: AssetImage("assets/images/profile.jpeg"),
+                            ),
+                            SizedBox(width: 10,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                buildText("John Deo",fontSize: 15,fontColor: Colors.black),
+
+                                buildText('Online',fontSize: 12,fontColor: Colors.black),],),
+                          ],
+                        ),
+
+
+
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10,right: 10,left: 10),
+                            child: Container(
+                              height: 1,
+                              width: 300,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.only(top: 20,left: 20,right: 0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  buildText('Hi,Good Morning'),
+                                  SizedBox(width: 120),
+
+                                  CircleAvatar(
+                                    radius: 20,
+                                    backgroundImage: AssetImage("assets/images/profile.jpeg"),
+                                  ),
+
+                                ],
+                              )
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.only(top: 30,left: 20,right: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+
+
+                                  CircleAvatar(
+                                    radius: 20,
+                                    backgroundImage: AssetImage("assets/images/doctor.jpeg"),
+                                  ),
+                                  SizedBox(width: 10),
+
+                                  buildText('Good Morning'),
+
+                                ],
+                              )
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.only(top: 30,left: 20,right: 0),
+                              child: Row(
+                                children: [
+                                  buildText('How are you'),
+                                  SizedBox(
+                                    width: 150,
+                                  ),
+
+                                  CircleAvatar(
+                                    radius: 20,
+                                    backgroundImage: AssetImage("assets/images/profile.jpeg"),
+                                  ),
+
+                                ],
+                              )
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10,right: 10,left: 10),
+                            child: Container(
+                              height: 1,
+                              width: 300,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.only(top: 10,left: 10,right: 0),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.more_vert),
+                                  buildText("Type Something..."),
+                                  SizedBox(
+                                    width: 140,
+                                  ),
+                                  Icon(Icons.send),
+
+                                ],
+                              )
+                          ),
+
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
-
-
-
-
-
-          /* Padding(
-            padding: const EdgeInsets.only(top: 700),
-            child: Container(
-              height: 50,
-              color: Colors.green,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 640),
-            child: Container(
-              height: 50,
-              color: Colors.yellow,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 800),
-            child: Container(
-              height: 50,
-              color: Colors.orange,
-            ),
-          )*/
-
         ],
       ),
     );

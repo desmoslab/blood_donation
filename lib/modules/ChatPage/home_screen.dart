@@ -24,10 +24,11 @@ class HomesScreens extends StatelessWidget {
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(15.0),
               child: Row(
               //  mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
+
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -39,7 +40,7 @@ class HomesScreens extends StatelessWidget {
                           borderRadius: BorderRadius.all(Radius.circular(40)),
                           border: Border.all(
                             width: 2,
-                            color:Colors.black
+                            color: backColor
                           ),
                           // shape: BoxShape.circle,
                           boxShadow: [
