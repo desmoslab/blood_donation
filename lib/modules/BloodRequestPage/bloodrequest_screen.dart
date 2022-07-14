@@ -1,4 +1,8 @@
+import 'dart:collection';
+
 import 'package:blood_donation/model/user_model.dart';
+import 'package:blood_donation/modules/BloodRequestPage/personal.dart';
+import 'package:blood_donation/modules/BloodRequestPage/upload.dart';
 import 'package:blood_donation/modules/ChatPage/chat_screen.dart';
 import 'package:blood_donation/modules/ChatPage/home_screen.dart';
 import 'package:blood_donation/modules/initial_screen.dart';
@@ -15,21 +19,60 @@ import '../../baseUtils/strings.dart';
 
 
 import '../../widgets/common_widget.dart';
+import 'contact.dart';
 
 
 
 
-class BloodDonateScreen extends StatefulWidget {
-  const BloodDonateScreen({Key? key}) : super(key: key);
+class BloodRequestScreen extends StatefulWidget {
+  const BloodRequestScreen({Key? key}) : super(key: key);
   @override
-  State<BloodDonateScreen> createState() => BloodDonateScreenState();
+  State<BloodRequestScreen> createState() => BloodRequestScreenState();
 }
 
-class BloodDonateScreenState extends State<BloodDonateScreen> {
+class BloodRequestScreenState extends State<BloodRequestScreen> {
   final TextEditingController _userController = new TextEditingController();
   final TextEditingController _passController = new TextEditingController();
   bool _isChecked = false;
   final TextEditingController userController = new TextEditingController();
+  var currentStep = 0;
+  final _stepsText = ["Personal Details", "Address", "Success"];
+
+  final _stepCircleRadius = 10.0;
+
+  final _stepProgressViewHeight = 150.0;
+
+  Color _activeColor = Colors.lightBlue;
+
+  Color _inactiveColor = Colors.grey;
+
+  TextStyle _headerStyle =
+  TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold);
+
+  TextStyle _stepStyle = TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold);
+
+  late Size _safeAreaSize;
+
+  int _curPage = 1;
+  StepProgressView _getStepProgress() {
+    return StepProgressView(
+      _stepsText,
+      _curPage,
+      _stepProgressViewHeight,
+      _safeAreaSize.width,
+      _stepCircleRadius,
+      _activeColor,
+      _inactiveColor,
+      _headerStyle,
+      _stepStyle,
+      decoration: BoxDecoration(color: Colors.white),
+      padding: EdgeInsets.only(
+        top: 5.0,
+        left: 24.0,
+        right: 24.0,
+      ),
+    );
+  }
 
 
   @override
@@ -45,7 +88,35 @@ class BloodDonateScreenState extends State<BloodDonateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+
+    var mapData = HashMap<String, String>();
+    mapData["first_name"] = PersonalState.controllerFirstName.text;
+    mapData["last_name"] = PersonalState.controllerLastName.text;
+    mapData["date_of_birth"] = PersonalState.controllerDateOfBirth.text;
+    mapData["gender"] = PersonalState.controllerGender.text;
+
+    List<Step> steps = [
+      Step(
+        title: Text('Patient'),
+        content: Personal(),
+        isActive: currentStep >= 0,
+        state: currentStep >= 0 ? StepState.indexed : StepState.indexed,
+
+      ),
+      Step(
+        title: Text('Contact'),
+        content: Contact(),
+        isActive: currentStep >= 0,
+        state: currentStep >= 1 ? StepState.indexed : StepState.indexed,
+      ),
+      Step(
+        title: Text('Success'),
+        content: Upload(),
+        isActive: currentStep >= 0,
+        state: currentStep >= 2 ? StepState.complete : StepState.indexed,
+      ),
+    ];
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -67,7 +138,7 @@ class BloodDonateScreenState extends State<BloodDonateScreen> {
                     Get.back();
                   },child: Icon(Icons.arrow_back,color: Colors.white,)),
                   SizedBox(width: 20,),
-                  buildText(" Blood Donation ",fontSize: 20,fontColor: Colors.white,maxLine: 2,fontWeight: FontWeight.bold),
+                  buildText(" Blood Request ",fontSize: 20,fontColor: Colors.white,maxLine: 2,fontWeight: FontWeight.bold),
 
                 ],
               ),),
@@ -75,149 +146,155 @@ class BloodDonateScreenState extends State<BloodDonateScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 140,left: 20,right: 20),
               child: new Container(
-                height: 240.0,
+                height: 800.0,
                 //color: Colors.white,
                 decoration: new BoxDecoration(
-                  color:Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: Colors.grey)
+                    color:Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: Colors.grey)
 
 
 
                 ),
 
                 width: MediaQuery.of(context).size.width,
-                child: Column(
-                  children: [
-
-                    Padding(
-                      padding: const EdgeInsets.only(top:10,left: 10,right: 10),
-                      child: Container(decoration: new BoxDecoration(
-                          color:Colors.white,
-                          borderRadius: BorderRadius.circular(15),
+                child: Padding(
+                  padding: const EdgeInsets.only(top:5,left: 0,right: 0),
+                  child: Container(decoration: new BoxDecoration(
+                    color:Colors.white,
+                    borderRadius: BorderRadius.circular(15),
 
 
 
 
-                      ),
+                  ),
 
 
 
-                        height: getDeviceHeightByPercentage(10, context),
-                        width: getDeviceWidthByPercentage(100, context),
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 10,left: 10),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              buildText('I am available for donate',fontSize: 18),
-                             Icon(Icons.toggle_off_outlined,size: 35,)
+                    height: getDeviceHeightByPercentage(10, context),
+                    width: getDeviceWidthByPercentage(100, context),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 0,left: 0),
+                      child:  Theme(
+                        data: ThemeData(accentColor:Colors.black,colorScheme: ColorScheme.fromSwatch().copyWith(primary: mainColor)),
+                        child: Stepper(
 
-                            ],
+                          controlsBuilder: (context, ControlsDetails details ){
+                            final _isLastStep = currentStep == steps.length - 3;
+                            return Container(
 
-                          ),
-
-                        ),
-
-
-
-
-
-
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 0,left: 20,right: 20),
-                      child: Container(decoration: new BoxDecoration(
-                        color:Colors.white38,
-                        borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Colors.grey)
-
-
-
-
-                      ),
-
-
-
-                        height: getDeviceHeightByPercentage(12, context),
-                        width: getDeviceWidthByPercentage(100, context),
-                        child:Column(
-                          children: [
-                            Row(
-                             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                // buildText(order_status == orderStatus.not_assigned.toShortString()?'New Order Placed': order_status == orderStatus.confirm.toShortString()? 'Order Confirmed':
-
-                              ],
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 10,left: 25),
                               child: Row(
-                               mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                      flex:2,
-                                      child: buildText('Last Donate Date',  fontColor: Colors.grey, fontSize: 15)),
-                                  Expanded(
-                                      flex:2,
-                                      child: buildText('Left Days',  fontColor: Colors.grey, fontSize: 15)),
+                                children:<Widget> [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 7,right: 0),
+                                    child: Column(
+                                      children: [
+                                        if (currentStep < 2)
+                                        //_getStepProgress(),
+                                        ElevatedButton(
+                                          style: ButtonStyle(
+                                            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                            backgroundColor: MaterialStateProperty.all<Color>(mainColor),
+                                            padding: MaterialStateProperty.all(EdgeInsets.only(left:125,top: 12,bottom: 12,right: 125)),
+                                            textStyle: MaterialStateProperty.all(TextStyle(fontSize: 18)) ,
+                                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(12.0),
+                                                side: BorderSide(
+                                                  color: Colors.white,
+                                                  width: 2.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          child: Row(
+                                            children: [
 
 
+                                              Text(_isLastStep? 'Next': 'Next'),
+                                            ],
+                                          ),
+                                          onPressed: details.onStepContinue,
+
+                                        ),
+                                        if(currentStep >= 2)
+                                          ElevatedButton(
+                                            style: ButtonStyle(
+                                              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                              backgroundColor: MaterialStateProperty.all<Color>(mainColor),
+                                              padding: MaterialStateProperty.all(EdgeInsets.only(left:120,top: 12,bottom: 12,right: 120)),
+                                              textStyle: MaterialStateProperty.all(TextStyle(fontSize: 18)) ,
+                                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(12.0),
+                                                  side: BorderSide(
+                                                    color: Colors.white,
+                                                    width: 2.0,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            child: Row(
+                                              children: [
+
+
+                                                Text('Home'),
+                                              ],
+                                            ),
+                                            onPressed: (){},
+
+                                          ),
+
+                                      ],
+                                    ),
+                                  ),
+                                 // TextButton(onPressed: details.onStepContinue, child: Text(_isLastStep? 'Next': 'Next')),
                                 ],
                               ),
-                            ),
-
-                            Padding(
-                              padding:  EdgeInsets.only(top: 20,left: 25),
-                              child: Row(
-                               // mainAxisSize: MainAxisSize.max,
-                               // mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                      flex:2,
-                                      child: buildText('12-02-2022',  fontColor: Colors.black, fontSize: 15, fontWeight: FontWeight.w600)),
-                                  Expanded(
-                                      flex:2,
-                                      child: buildText('10 Days Left',  fontColor: Colors.black, fontSize: 15, fontWeight: FontWeight.w600)),
-
-
-
-                                ],
-
-                              ),
-                            ),
-
-
-
-
-
-                          ],
+                            );
+                          },
+                          currentStep: this.currentStep,
+                          steps: steps,
+                          type: StepperType.horizontal,
+                          onStepTapped: (step) {
+                            setState(() {
+                              currentStep = step;
+                            });
+                          },
+                          onStepContinue: () {
+                            setState(() {
+                              if(currentStep !=2){
+                                currentStep += 1;
+                              }
+                            });
+                          },
+                          onStepCancel: () {
+                            setState(() {
+                              if (currentStep != 0) {
+                                currentStep -= 1;
+                              }
+                            });
+                          },
                         ),
-
-
-
-
-
-
                       ),
+
                     ),
 
 
 
 
-                  ],
+
+
+                  ),
                 ),
               ),
             ),
-            Padding(padding: EdgeInsets.only(top: 410,left: 22),
-              child: Column(
-                children: [
-                  buildText('History',fontSize: 16,fontColor: Colors.black)
-                ],
-              )),
+           /* Padding(padding: EdgeInsets.only(top: 410,left: 22),
+                child: Column(
+                  children: [
+                    buildText('History',fontSize: 16,fontColor: Colors.black)
+                  ],
+                )),
             Padding(
               padding: const EdgeInsets.only(top: 450,left: 20,right: 20),
               child: new Container(
@@ -527,7 +604,7 @@ class BloodDonateScreenState extends State<BloodDonateScreen> {
                             Image(
 
                               image: AssetImage('assets/images/hero.png'),
-                            height: 50,
+                              height: 50,
                               width: 50,
                             ),
 
@@ -574,11 +651,151 @@ class BloodDonateScreenState extends State<BloodDonateScreen> {
                   ),
                 ),
               ),
-            ),
+            ),*/
           ],
         ),
       ),
     );
+  }
+}
+class StepProgressView extends StatelessWidget {
+  const StepProgressView(
+      List<String> stepsText,
+      int curStep,
+      double height,
+      double width,
+      double dotRadius,
+      Color activeColor,
+      Color inactiveColor,
+      TextStyle headerStyle,
+      TextStyle stepsStyle, {
 
+        required this.decoration,
+        required this.padding,
+        this.lineHeight = 2.0,
+      })  : _stepsText = stepsText,
+        _curStep = curStep,
+        _height = height,
+        _width = width,
+        _dotRadius = dotRadius,
+        _activeColor = activeColor,
+        _inactiveColor = inactiveColor,
+        _headerStyle = headerStyle,
+        _stepStyle = stepsStyle,
+        assert(curStep > 0 == true && curStep <= stepsText.length),
+        assert(width > 0),
+        assert(height >= 2 * dotRadius),
+        assert(width >= dotRadius * 2 * stepsText.length);
+
+
+  //height of the container
+  final double _height;
+  //width of the container
+  final double _width;
+  //container decoration
+  final BoxDecoration decoration;
+  //list of texts to be shown for each step
+  final List<String> _stepsText;
+  //cur step identifier
+  final int _curStep;
+  //active color
+  final Color _activeColor;
+  //in-active color
+  final Color _inactiveColor;
+  //dot radius
+  final double _dotRadius;
+  //container padding
+  final EdgeInsets padding;
+  //line height
+  final double lineHeight;
+  //header textstyle
+  final TextStyle _headerStyle;
+  //steps text
+  final TextStyle _stepStyle;
+
+  List<Widget> _buildNumbers() {
+    var wids = <Widget>[];
+    _stepsText.asMap().forEach((i, text) {
+      var circleColor =
+      (i == 0 || _curStep > i + 1) ? mainColor : _inactiveColor;
+
+      var lineColor = _curStep > i + 1 ? mainColor : _inactiveColor;
+
+      wids.add(CircleAvatar(
+        radius: _dotRadius,
+        backgroundColor: circleColor,
+      ));
+
+      //add a line separator
+      //0-------0--------0
+      if (i != _stepsText.length - 1) {
+        wids.add(
+          Expanded(
+            child: Container(
+              height: lineHeight,
+              color: lineColor,
+            ),
+          ),
+        );
+      }
+    });
+
+    return wids;
+  }
+
+  List<Widget> _buildText() {
+    var wids = <Widget>[];
+    _stepsText.asMap().forEach((i, text) {
+      wids.add(Text(text, style: _stepStyle));
+    });
+
+    return wids;
+  }
+
+  Widget build(BuildContext context) {
+    return Container(
+      padding: padding,
+      height: this._height,
+      width: this._width,
+      decoration: this.decoration,
+      child: Column(
+        children: <Widget>[
+          Container(
+            child: Center(
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: (_curStep).toString(),
+                      style: _headerStyle.copyWith(
+                        color: _activeColor, //this is always going to be active
+                      ),
+                    ),
+                    TextSpan(
+                      text: " / " + _stepsText.length.toString(),
+                      style: _headerStyle.copyWith(
+                        color: _curStep == _stepsText.length
+                            ? _activeColor
+                            : _inactiveColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Row(
+            children: _buildNumbers(),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: _buildText(),
+          )
+        ],
+      ),
+    );
   }
 }

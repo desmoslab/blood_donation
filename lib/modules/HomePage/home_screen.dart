@@ -1,5 +1,6 @@
 import 'package:blood_donation/model/user_model.dart';
 import 'package:blood_donation/modules/BloodDonatePage/blooddonate_screen.dart';
+import 'package:blood_donation/modules/BloodRequestPage/bloodrequest_screen.dart';
 import 'package:blood_donation/modules/ChatPage/chat_screen.dart';
 import 'package:blood_donation/modules/ChatPage/home_screen.dart';
 import 'package:blood_donation/modules/initial_screen.dart';
@@ -398,13 +399,65 @@ class HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 232,top: 660),
-            child: Container(
-              //color: appColor,
-                width: getDeviceWidthByPercentage(33, context),
+          InkWell(
+            onTap: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => BloodRequestScreen(),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 232,top: 660),
+              child: Container(
+                //color: appColor,
+                  width: getDeviceWidthByPercentage(33, context),
+                  height: getDeviceHeightByPercentage(6 , context),
+                  // alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7),
+                    color: Colors.white,
+                    border: Border.all(color: Colors.black12),
+
+                  ),
+
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 35,top: 3),
+                    child: Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildText('Blood', fontWeight: FontWeight.bold, fontSize: 14 ),
+                            buildText('Request', fontWeight: FontWeight.bold, fontSize: 14 ),
+
+                          ],
+                        ),
+                        Align(alignment: Alignment.topLeft,
+                          child: Icon(Icons.arrow_forward_ios,size: 16,),)
+                      ],
+                    ),
+                  )
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => BloodDonateScreen(),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 660,left: 200),
+              child: Container(
+                //color: appColor,
+                width: getDeviceWidthByPercentage(13, context),
                 height: getDeviceHeightByPercentage(6 , context),
-                // alignment: Alignment.center,
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(7),
                   color: Colors.white,
@@ -412,44 +465,12 @@ class HomeScreenState extends State<HomeScreen> {
 
                 ),
 
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 35,top: 3),
-                  child: Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          buildText('Blood', fontWeight: FontWeight.bold, fontSize: 14 ),
-                          buildText('Request', fontWeight: FontWeight.bold, fontSize: 14 ),
+                child:Image(
 
-                        ],
-                      ),
-                      Align(alignment: Alignment.topLeft,
-                        child: Icon(Icons.arrow_forward_ios,size: 16,),)
-                    ],
-                  ),
-                )
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 660,left: 200),
-            child: Container(
-              //color: appColor,
-              width: getDeviceWidthByPercentage(13, context),
-              height: getDeviceHeightByPercentage(6 , context),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(7),
-                color: Colors.white,
-                border: Border.all(color: Colors.black12),
-
-              ),
-
-              child:Image(
-
-                image: AssetImage('assets/images/Blood Request.png'),
-                height: getDeviceHeightByPercentage(4, context),
-                width: getDeviceWidthByPercentage(5, context),
+                  image: AssetImage('assets/images/Blood Request.png'),
+                  height: getDeviceHeightByPercentage(4, context),
+                  width: getDeviceWidthByPercentage(5, context),
+                ),
               ),
             ),
           ),
