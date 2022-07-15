@@ -58,8 +58,16 @@ class ContactState extends State<Contact> {
         ),
         //User Text Box
         Padding(
-          padding: const EdgeInsets.only(left: 0,right: 0),
-          child: buildTextField(_userController, Strings.userName,borderColor: Colors.grey),
+          padding: const EdgeInsets.only(left: 12,right: 12,top: 5),
+          child: Card(
+            color: Colors.white,
+            child: Padding(
+              padding: EdgeInsets.all(15),
+              child: TextField(
+                maxLines: 5, //or null
+                decoration: InputDecoration.collapsed(hintText: "Enter hospital address"),
+              ),
+            ),),
         ),
 
         Container(

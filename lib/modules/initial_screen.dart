@@ -2,6 +2,7 @@ import 'dart:io';
 
 
 import 'package:blood_donation/baseUtils/colors.dart';
+import 'package:blood_donation/modules/BloodDonation/blooddonation_screen.dart';
 import 'package:blood_donation/modules/HomePage/home_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +98,8 @@ class InitialScreenState extends State<InitialScreen> {
           currentTabIndex == 3? MyOrderScreen():
           currentTabIndex == 4? AccountPage():
           HomeScreen()*/
-        body: HomeScreen(),
+        body: currentTabIndex ==1? BloodDonationScreen():
+        HomeScreen(),
 
       ),
     );
